@@ -7,12 +7,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <title>Title</title>
 </head>
 <body>
 <h1 style="color: ${cookie.get("color").value}">USERS</h1>
+<input name="password" type="password">
+<input name="password_repeat" type="password">
 <form action="/users" method="post">
     <select name="color">
         <option value="red">RED</option>
