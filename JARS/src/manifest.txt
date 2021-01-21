@@ -1,0 +1,2 @@
+Main-class: ru.itis.javalab.DZ2
+
