@@ -13,10 +13,11 @@ import java.util.Optional;
 
 public class UsersRepositoryJdbcImpl implements UsersRepository {
 
-    private static final String SQL_SELECT_BY_AGE = "select * from student where id = ?";
+    private static final String SQL_SELECT_BY_AGE = "select * from student where age = ?";
     private static final String SQL_SELECT = "select * from student";
 
     private DataSource dataSource;
+    private SimpleJdbcTemplate template;
 
     public UsersRepositoryJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -31,48 +32,8 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
     @Override
     public List<User> findAllByAge(Integer age) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(SQL_SELECT_BY_AGE);
-            statement.setInt(1, age);
-            resultSet = statement.executeQuery();
-
-            List<User> users = new ArrayList<>();
-
-            while (resultSet.next()) {
-                User user = userRowMapper.mapRow(resultSet);
-
-                users.add(user);
-            }
-            return users;
-
-        } catch (SQLException e) {
-            throw new IllegalStateException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException ignore) {
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ignore) {
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ignore) {
-                }
-            }
-        }
+        List<User> users = template.query(SQL_SELECT_BY_AGE, userRowMapper, age);
+        return users;
     }
 
     @Override
@@ -81,48 +42,15 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     }
 
     @Override
+    public Optional<User> findOneById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<User> findAll() {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+        List<User> users = template.query(SQL_SELECT, userRowMapper);
 
-
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(SQL_SELECT);
-            resultSet = statement.executeQuery();
-
-            List<User> users = new ArrayList<>();
-
-            while (resultSet.next()) {
-                User user = userRowMapper.mapRow(resultSet);
-
-                users.add(user);
-            }
-            return users;
-
-        } catch (SQLException e) {
-            throw new IllegalStateException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException ignore) {
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ignore) {
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ignore) {
-                }
-            }
-        }
+        return users;
     }
 
     @Override
