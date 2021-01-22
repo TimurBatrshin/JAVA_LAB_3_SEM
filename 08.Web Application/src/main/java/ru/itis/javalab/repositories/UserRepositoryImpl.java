@@ -11,8 +11,8 @@ import java.util.Optional;
 
 
 public class UserRepositoryImpl implements UserRepository {
-    private static final String SQL_FIND_ALL = "select * from players";
-    private static final String SQL_FIND_ALL_BY_AGE = "select * from players where age = ?";
+    private static final String SQL_FIND_ALL = "select * from students";
+    private static final String SQL_FIND_ALL_BY_AGE = "select * from students where age = ?";
 
     private DataSource dataSource;
     private SimpleJdbcTemplate template;
