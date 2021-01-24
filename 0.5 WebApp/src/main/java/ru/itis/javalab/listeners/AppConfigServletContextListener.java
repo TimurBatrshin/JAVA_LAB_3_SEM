@@ -1,11 +1,12 @@
 package ru.itis.javalab.listeners;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.itis.javalab.repositories.UsersRepository;
-import ru.itis.javalab.repositories.UsersRepositoryJdbcImpl;
+import ru.itis.javalab.repositories.UsersRepositoryJdbcTemplateImpl;
 import ru.itis.javalab.services.UsersService;
 import ru.itis.javalab.services.UsersServiceImpl;
 
@@ -37,13 +38,15 @@ public class AppConfigServletContextListener implements ServletContextListener {
         hikariConfig.setMaximumPoolSize(Integer.parseInt(properties.getProperty("db.jdbc.hikari.max-pool-size")));
 
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
-        UsersRepository usersRepository = new UsersRepositoryJdbcImpl(dataSource);
+        UsersRepository usersRepository = new UsersRepositoryJdbcTemplateImpl(dataSource);
+        ObjectMapper objectMapper = new ObjectMapper();
         UsersService usersService = new UsersServiceImpl(usersRepository);
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         servletContext.setAttribute("dataSource", dataSource);
         servletContext.setAttribute("userService", usersService);
+        servletContext.setAttribute("objectMapper", objectMapper);
         servletContext.setAttribute("passwordEncoder", passwordEncoder);
     }
 
