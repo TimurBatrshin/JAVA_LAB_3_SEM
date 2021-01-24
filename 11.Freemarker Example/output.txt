@@ -1,0 +1,12 @@
+Hello, Timur, your id is 1
+
+    Age is undefined
+
+Other user:
+
+    Name: Марсель
+    Age: 26
+    Name: Алексей
+    Age: 19
+    Name: Игорь
+    Age: 18
