@@ -1,5 +1,9 @@
 package ru.itis.javalab.servlet;
 
+import freemarker.cache.FileTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import ru.itis.javalab.models.User;
 import ru.itis.javalab.services.UsersService;
 
@@ -11,8 +15,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "UsersServlet", urlPatterns = "/users")
 public class UsersServlet extends HttpServlet {
@@ -37,7 +45,8 @@ public class UsersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<User> users = usersService.getAllUsers();
+
         request.setAttribute("usersForJsp", users);
-        request.getRequestDispatcher("WEB-INF/users.jsp").forward(request, response);
+        request.getRequestDispatcher("users.jsp").forward(request, response);
     }
 }
