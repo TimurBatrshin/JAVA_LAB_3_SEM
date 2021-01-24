@@ -7,8 +7,8 @@ public class BCrypterServiceImpl implements BCrypterService {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public boolean checkPassword(String pass, String PRPass) {
-        if (pass.equals(PRPass)) {
+    public boolean checkPassword(String pass, String pRPass) {
+        if (passwordEncoder.matches(pass, pRPass)) {
             return true;
         } else return false;
     }
